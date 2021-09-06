@@ -1,0 +1,11 @@
+framework module KakaoSDKAuth {
+  umbrella header "KakaoSDKAuth.h"
+
+  export *
+  module * { export * }
+}
+
+module KakaoSDKAuth.Swift {
+    header "KakaoSDKAuth-Swift.h"
+    requires objc
+}
