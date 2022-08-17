@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		769ED92326E5F09E00A2CDCF /* KakaoCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769ED90E26E5F09E00A2CDCF /* KakaoCommon.swift */; };
+		7648140128ACE11700034315 /* KakaoSDKCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7648140028ACE11700034315 /* KakaoSDKCommon.swift */; };
 		769ED92426E5F09E00A2CDCF /* SdkCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769ED91026E5F09E00A2CDCF /* SdkCrypto.swift */; };
 		769ED92526E5F09E00A2CDCF /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769ED91126E5F09E00A2CDCF /* Properties.swift */; };
 		769ED92626E5F09E00A2CDCF /* SdkUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769ED91226E5F09E00A2CDCF /* SdkUtils.swift */; };
@@ -31,9 +31,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7648140028ACE11700034315 /* KakaoSDKCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KakaoSDKCommon.swift; sourceTree = "<group>"; };
 		769ED90326E5F06800A2CDCF /* KakaoSDKCommon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KakaoSDKCommon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		769ED90726E5F06800A2CDCF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		769ED90E26E5F09E00A2CDCF /* KakaoCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KakaoCommon.swift; sourceTree = "<group>"; };
 		769ED91026E5F09E00A2CDCF /* SdkCrypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SdkCrypto.swift; sourceTree = "<group>"; };
 		769ED91126E5F09E00A2CDCF /* Properties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Properties.swift; sourceTree = "<group>"; };
 		769ED91226E5F09E00A2CDCF /* SdkUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SdkUtils.swift; sourceTree = "<group>"; };
@@ -136,9 +136,9 @@
 		76A10AE626E5FC5A00D4FC30 /* common */ = {
 			isa = PBXGroup;
 			children = (
+				7648140028ACE11700034315 /* KakaoSDKCommon.swift */,
 				769ED90F26E5F09E00A2CDCF /* common */,
 				769ED91826E5F09E00A2CDCF /* extension */,
-				769ED90E26E5F09E00A2CDCF /* KakaoCommon.swift */,
 				769ED92026E5F09E00A2CDCF /* model */,
 			);
 			path = common;
@@ -253,7 +253,7 @@
 				769ED92526E5F09E00A2CDCF /* Properties.swift in Sources */,
 				769ED93026E5F09E00A2CDCF /* Dictionary+Utils.swift in Sources */,
 				769ED92C26E5F09E00A2CDCF /* EncodingContainer+AnyCollection.swift in Sources */,
-				769ED92326E5F09E00A2CDCF /* KakaoCommon.swift in Sources */,
+				7648140128ACE11700034315 /* KakaoSDKCommon.swift in Sources */,
 				769ED92A26E5F09E00A2CDCF /* SdkError.swift in Sources */,
 				769ED92826E5F09E00A2CDCF /* Common.swift in Sources */,
 				769ED92426E5F09E00A2CDCF /* SdkCrypto.swift in Sources */,
