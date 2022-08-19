@@ -21,9 +21,9 @@ public class Constants {
     static public let kaHeader : String = generateKaHeader()
     static func generateKaHeader() -> String {
     
-        let sdkVersion = KakaoCommon.shared.sdkVersion()        
+        let sdkVersion = KakaoSDK.shared.sdkVersion()
 
-        let sdkType = KakaoCommon.shared.sdkType().rawValue
+        let sdkType = KakaoSDK.shared.sdkType().rawValue
         
         let osVersion = UIDevice.current.systemVersion
         

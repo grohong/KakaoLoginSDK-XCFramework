@@ -1,11 +1,12 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 5.4.2 (swiftlang-1205.0.28.2 clang-1205.0.19.57)
+// swift-compiler-version: Apple Swift version 5.6.1 (swiftlang-5.6.0.323.66 clang-1316.0.20.12)
 // swift-module-flags: -target x86_64-apple-ios13.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name KakaoSDKCommon
 import Alamofire
 import CommonCrypto
 import Foundation
 import Swift
 import UIKit
+import _Concurrency
 public class Hosts {
   public static let shared: KakaoSDKCommon.Hosts
   final public let kapi: Swift.String
@@ -14,11 +15,10 @@ public class Hosts {
   final public let kauth: Swift.String
   final public let talkAuth: Swift.String
   final public let channel: Swift.String
-  final public let webnavi: Swift.String
   final public let talkLink: Swift.String
   final public let talkLinkVersion: Swift.String
   final public let sharerLink: Swift.String
-  public init(kapi: Swift.String = "kapi.kakao.com", dapi: Swift.String = "dapi.kakao.com", auth: Swift.String = "auth.kakao.com", kauth: Swift.String = "kauth.kakao.com", talkAuth: Swift.String = "kakaokompassauth", channel: Swift.String = "pf.kakao.com", webnavi: Swift.String = "kakaonavi-wguide.kakao.com", talkLink: Swift.String = "kakaolink", talkLinkVersion: Swift.String = "kakaotalk-5.9.7", sharerLink: Swift.String = "sharer.kakao.com")
+  public init(kapi: Swift.String = "kapi.kakao.com", dapi: Swift.String = "dapi.kakao.com", auth: Swift.String = "auth.kakao.com", kauth: Swift.String = "kauth.kakao.com", talkAuth: Swift.String = "kakaokompassauth", channel: Swift.String = "pf.kakao.com", talkLink: Swift.String = "kakaolink", talkLinkVersion: Swift.String = "kakaotalk-5.9.7", sharerLink: Swift.String = "sharer.kakao.com")
   @objc deinit
 }
 public enum HostType {
@@ -29,7 +29,7 @@ public enum HostType {
   case TalkAuth
   case Channel
   case Navi
-  case WebNavi
+  case NaviInstall
   case TalkLink
   case TalkLinkVersion
   case SharerLink
@@ -67,6 +67,10 @@ public enum HostType {
   public static let customMessage: Swift.String
   public static let defaultMessage: Swift.String
   public static let scrapMessage: Swift.String
+  public static let selectFriends: Swift.String
+  public static let userScpoes: Swift.String
+  public static let selectChats: Swift.String
+  public static let selectChatMembers: Swift.String
   public static let isStoryUser: Swift.String
   public static let storyProfile: Swift.String
   public static let storyLinkInfo: Swift.String
@@ -78,18 +82,16 @@ public enum HostType {
   public static let postPhoto: Swift.String
   public static let uploadMulti: Swift.String
   public static let channel: Swift.String
-  public static let shareDestination: Swift.String
   public static let navigateDestination: Swift.String
-  public static let webShareDestination: Swift.String
-  public static let webNavigateDestination: Swift.String
+  public static let webNaviInstall: Swift.String
   public static let talkLink: Swift.String
   public static let talkLinkVersion: Swift.String
-  public static let validateLink: Swift.String
-  public static let scrapLink: Swift.String
-  public static let defalutLink: Swift.String
+  public static let shareCustomValidate: Swift.String
+  public static let shareScrapValidate: Swift.String
+  public static let shareDefalutValidate: Swift.String
   public static let sharerLink: Swift.String
-  public static let imageUploadLink: Swift.String
-  public static let imageScrapLink: Swift.String
+  public static let shareImageUpload: Swift.String
+  public static let shareImageScrap: Swift.String
   public static let searchCafe: Swift.String
   @objc deinit
 }
@@ -97,11 +99,11 @@ public enum HostType {
   public static func compose(_ hostType: KakaoSDKCommon.HostType = .Kapi, path: Swift.String) -> Swift.String
   @objc deinit
 }
-extension Data {
+extension Foundation.Data {
   public func hexEncodedString() -> Swift.String
 }
-extension UIApplication {
-  public class func getMostTopViewController(base: UIKit.UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIKit.UIViewController?
+extension UIKit.UIApplication {
+  @_Concurrency.MainActor(unsafe) public class func getMostTopViewController(base: UIKit.UIViewController? = nil) -> UIKit.UIViewController?
 }
 @_hasMissingDesignatedInitializers public class SdkJSONEncoder : Foundation.JSONEncoder {
   public static var `default`: KakaoSDKCommon.SdkJSONEncoder {
@@ -110,7 +112,6 @@ extension UIApplication {
   public static var custom: KakaoSDKCommon.SdkJSONEncoder {
     get
   }
-  override public init()
   @objc deinit
 }
 @_hasMissingDesignatedInitializers public class SdkJSONDecoder : Foundation.JSONDecoder {
@@ -126,7 +127,6 @@ extension UIApplication {
   public static var customSecondsSince1970: KakaoSDKCommon.SdkJSONDecoder {
     get
   }
-  override public init()
   @objc deinit
 }
 public struct ErrorInfo : Swift.Codable {
@@ -184,14 +184,14 @@ open class SdkLog {
   public class func e(_ object: Any, filename: Swift.String = #file, line: Swift.Int = #line, column: Swift.Int = #column, funcName: Swift.String = #function)
   @objc deinit
 }
-extension Date {
+extension Foundation.Date {
   public func toString() -> Swift.String
   public func toSimpleString() -> Swift.String
 }
-extension Array where Element == Swift.String {
+extension Swift.Array where Element == Swift.String {
   public func toJsonString() -> Swift.String?
 }
-extension Array where Element == Swift.Int64 {
+extension Swift.Array where Element == Swift.Int64 {
   public func toJsonString() -> Swift.String?
 }
 @_hasMissingDesignatedInitializers public class SdkUtils {
@@ -207,7 +207,7 @@ public class ApiRequestAdapter : Alamofire.RequestInterceptor {
   public func adapt(_ urlRequest: Foundation.URLRequest, for session: Alamofire.Session, completion: @escaping (Swift.Result<Foundation.URLRequest, Swift.Error>) -> Swift.Void)
   @objc deinit
 }
-extension KeyedDecodingContainer {
+extension Swift.KeyedDecodingContainer {
   public func decode(_ type: [Any].Type, forKey key: Swift.KeyedDecodingContainer<K>.Key) throws -> [Any]
   public func decode(_ type: [Swift.String : Any].Type, forKey key: Swift.KeyedDecodingContainer<K>.Key) throws -> [Swift.String : Any]
   public func decodeIfPresent(_ type: [Any].Type, forKey key: Swift.KeyedDecodingContainer<K>.Key) throws -> [Any]?
@@ -227,7 +227,7 @@ public struct AuthErrorInfo : Swift.Codable {
   public static func markSdkVersion()
   @objc deinit
 }
-extension Dictionary {
+extension Swift.Dictionary {
   public var queryParameters: Swift.String {
     get
   }
@@ -235,23 +235,23 @@ extension Dictionary {
     get
   }
 }
-extension Dictionary where Key == Swift.String, Value == Any? {
+extension Swift.Dictionary where Key == Swift.String, Value == Swift.Optional<Any> {
   public func filterNil() -> [Swift.String : Any]?
 }
-extension Dictionary where Key == Swift.String {
+extension Swift.Dictionary where Key == Swift.String {
   public func toJsonString() -> Swift.String?
 }
-extension Dictionary {
+extension Swift.Dictionary {
   public mutating func merge(_ dictionary: [Key : Value])
 }
-extension KeyedEncodingContainer {
+extension Swift.KeyedEncodingContainer {
   public mutating func encode(_ value: [Swift.String : Any], forKey key: Swift.KeyedEncodingContainer<K>.Key) throws
   public mutating func encode(_ value: [Any], forKey key: Swift.KeyedEncodingContainer<K>.Key) throws
   public mutating func encodeIfPresent(_ value: [Swift.String : Any]?, forKey key: Swift.KeyedEncodingContainer<K>.Key) throws
   public mutating func encodeIfPresent(_ value: [Any]?, forKey key: Swift.KeyedEncodingContainer<K>.Key) throws
 }
-final public class KakaoCommon {
-  public static let shared: KakaoSDKCommon.KakaoCommon
+final public class KakaoSDK {
+  public static let shared: KakaoSDKCommon.KakaoSDK
   public init()
   public static func initSDK(appKey: Swift.String, customScheme: Swift.String? = nil, loggingEnable: Swift.Bool = false, hosts: KakaoSDKCommon.Hosts? = nil, approvalType: KakaoSDKCommon.ApprovalType? = nil)
   final public func initialize(appKey: Swift.String, customScheme: Swift.String? = nil, loggingEnable: Swift.Bool = false, hosts: KakaoSDKCommon.Hosts? = nil, approvalType: KakaoSDKCommon.ApprovalType? = nil, sdkType: KakaoSDKCommon.SdkType)
@@ -263,7 +263,7 @@ final public class KakaoCommon {
   final public func scheme() throws -> Swift.String
   @objc deinit
 }
-extension KakaoCommon {
+extension KakaoSDKCommon.KakaoSDK {
   final public func appKey() throws -> Swift.String
   final public func kaHeader() -> Swift.String
   final public func redirectUri() -> Swift.String
@@ -273,16 +273,16 @@ public enum SdkError : Swift.Error {
   case ApiFailed(reason: KakaoSDKCommon.ApiFailureReason, errorInfo: KakaoSDKCommon.ErrorInfo?)
   case AuthFailed(reason: KakaoSDKCommon.AuthFailureReason, errorInfo: KakaoSDKCommon.AuthErrorInfo?)
 }
-extension SdkError {
+extension KakaoSDKCommon.SdkError {
   public init(reason: KakaoSDKCommon.ClientFailureReason = .Unknown, message: Swift.String? = nil)
 }
-extension SdkError {
+extension KakaoSDKCommon.SdkError {
   public init?(response: Foundation.HTTPURLResponse, data: Foundation.Data, type: KakaoSDKCommon.ApiType)
   public init?(parameters: [Swift.String : Swift.String])
   public init(scopes: [Swift.String]?)
   public init(apiFailedMessage: Swift.String? = nil)
 }
-extension SdkError {
+extension KakaoSDKCommon.SdkError {
   public var isClientFailed: Swift.Bool {
     get
   }
@@ -353,7 +353,7 @@ public enum ApiFailureReason : Swift.Int, Swift.Codable {
     get
   }
 }
-extension ApiFailureReason {
+extension KakaoSDKCommon.ApiFailureReason {
   public init(from decoder: Swift.Decoder) throws
 }
 public enum AuthFailureReason : Swift.String, Swift.Codable {
@@ -373,7 +373,7 @@ public enum AuthFailureReason : Swift.String, Swift.Codable {
     get
   }
 }
-extension AuthFailureReason {
+extension KakaoSDKCommon.AuthFailureReason {
   public init(from decoder: Swift.Decoder) throws
 }
 @_hasMissingDesignatedInitializers public class Constants {
@@ -416,7 +416,7 @@ public enum ApiType {
   public func decryptForMigration(data: Foundation.Data?, key: Foundation.Data?) -> Foundation.Data?
   @objc deinit
 }
-extension SdkCrypto {
+extension KakaoSDKCommon.SdkCrypto {
   public func generateCodeVerifier() -> Swift.String?
   public func base64(data: Foundation.Data) -> Swift.String
   public func base64url(data: Foundation.Data) -> Swift.String
@@ -443,16 +443,17 @@ public class Api {
   public init()
   @objc deinit
 }
-extension Api {
+extension KakaoSDKCommon.Api {
   public func addSession(type: KakaoSDKCommon.SessionType, session: Alamofire.Session)
   public func session(_ sessionType: KakaoSDKCommon.SessionType) -> Alamofire.Session
 }
-extension Api {
-  public func getRequestRetryFailedError(error: Alamofire.AFError?) -> KakaoSDKCommon.SdkError?
+extension KakaoSDKCommon.Api {
+  public func getSdkError(error: Swift.Error) -> KakaoSDKCommon.SdkError?
+  public func getRequestRetryFailedError(error: Swift.Error) -> KakaoSDKCommon.SdkError?
   public func responseData(_ HTTPMethod: Alamofire.HTTPMethod, _ url: Swift.String, parameters: [Swift.String : Any]? = nil, headers: [Swift.String : Swift.String]? = nil, sessionType: KakaoSDKCommon.SessionType = .AuthApi, apiType: KakaoSDKCommon.ApiType, logging: Swift.Bool = true, completion: @escaping (Foundation.HTTPURLResponse?, Foundation.Data?, Swift.Error?) -> Swift.Void)
   public func upload(_ HTTPMethod: Alamofire.HTTPMethod, _ url: Swift.String, images: [UIKit.UIImage?] = [], parameters: [Swift.String : Any]? = nil, headers: [Swift.String : Swift.String]? = nil, needsAccessToken: Swift.Bool = true, needsKAHeader: Swift.Bool = false, sessionType: KakaoSDKCommon.SessionType = .AuthApi, apiType: KakaoSDKCommon.ApiType, completion: @escaping (Foundation.HTTPURLResponse?, Foundation.Data?, Swift.Error?) -> Swift.Void)
 }
-extension URL {
+extension Foundation.URL {
   public func params() -> [Swift.String : Any]?
 }
 extension KakaoSDKCommon.HostType : Swift.Equatable {}

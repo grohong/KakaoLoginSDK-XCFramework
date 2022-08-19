@@ -1,5 +1,5 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 5.4.2 (swiftlang-1205.0.28.2 clang-1205.0.19.57)
+// swift-compiler-version: Apple Swift version 5.6.1 (swiftlang-5.6.0.323.66 clang-1316.0.20.12)
 // swift-module-flags: -target arm64-apple-ios13.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name KakaoSDKAuth
 import Alamofire
 import AuthenticationServices
@@ -9,6 +9,7 @@ import KakaoSDKCommon
 import SafariServices
 import Swift
 import UIKit
+import _Concurrency
 public protocol TokenManagable {
   func setToken(_ token: KakaoSDKAuth.OAuthToken?)
   func getToken() -> KakaoSDKAuth.OAuthToken?
@@ -20,7 +21,9 @@ public protocol TokenManagable {
   public static func hasToken() -> Swift.Bool
   final public func authorizeRequest(parameters: [Swift.String : Any]) -> Foundation.URLRequest?
   final public func agt(completion: @escaping (Swift.String?, Swift.Error?) -> Swift.Void)
-  final public func token(code: Swift.String, codeVerifier: Swift.String? = nil, redirectUri: Swift.String = KakaoCommon.shared.redirectUri(), completion: @escaping (KakaoSDKAuth.OAuthToken?, Swift.Error?) -> Swift.Void)
+  final public func token(code: Swift.String, codeVerifier: Swift.String? = nil, redirectUri: Swift.String = KakaoSDK.shared.redirectUri(), completion: @escaping (KakaoSDKAuth.OAuthToken?, Swift.Error?) -> Swift.Void)
+  final public func refreshToken(token oldToken: KakaoSDKAuth.OAuthToken? = nil, completion: @escaping (KakaoSDKAuth.OAuthToken?, Swift.Error?) -> Swift.Void)
+  @available(*, deprecated, message: "use refreshToken(token:completion:) instead")
   final public func refreshAccessToken(refreshToken: Swift.String? = nil, completion: @escaping (KakaoSDKAuth.OAuthToken?, Swift.Error?) -> Swift.Void)
   @objc deinit
 }
@@ -34,8 +37,9 @@ public struct OAuthToken : Swift.Codable {
   public let refreshTokenExpiredAt: Foundation.Date
   public let scope: Swift.String?
   public let scopes: [Swift.String]?
+  public let idToken: Swift.String?
   public init(from decoder: Swift.Decoder) throws
-  public init(accessToken: Swift.String, expiresIn: Foundation.TimeInterval? = nil, expiredAt: Foundation.Date? = nil, tokenType: Swift.String, refreshToken: Swift.String, refreshTokenExpiresIn: Foundation.TimeInterval? = nil, refreshTokenExpiredAt: Foundation.Date? = nil, scope: Swift.String?, scopes: [Swift.String]?)
+  public init(accessToken: Swift.String, expiresIn: Foundation.TimeInterval? = nil, expiredAt: Foundation.Date? = nil, tokenType: Swift.String, refreshToken: Swift.String, refreshTokenExpiresIn: Foundation.TimeInterval? = nil, refreshTokenExpiredAt: Foundation.Date? = nil, scope: Swift.String?, scopes: [Swift.String]?, idToken: Swift.String? = nil)
   public func encode(to encoder: Swift.Encoder) throws
 }
 public struct Token : Swift.Codable {
@@ -46,6 +50,7 @@ public struct Token : Swift.Codable {
   public let refreshTokenExpiresIn: Foundation.TimeInterval?
   public let scope: Swift.String?
   public let scopes: [Swift.String]?
+  public let idToken: Swift.String?
   public init(from decoder: Swift.Decoder) throws
   public func encode(to encoder: Swift.Encoder) throws
 }
@@ -60,6 +65,7 @@ public struct CertOAuthToken : Swift.Codable {
   public let scope: Swift.String?
   public let scopes: [Swift.String]?
   public let txId: Swift.String?
+  public let idToken: Swift.String?
   public init(from decoder: Swift.Decoder) throws
   public func encode(to encoder: Swift.Encoder) throws
 }
@@ -86,6 +92,7 @@ final public class TokenManager : KakaoSDKAuth.TokenManagable {
 public enum Prompt : Swift.String {
   case Login
   case Cert
+  case Signup
   public init?(rawValue: Swift.String)
   public typealias RawValue = Swift.String
   public var rawValue: Swift.String {
@@ -94,11 +101,7 @@ public enum Prompt : Swift.String {
 }
 public class AuthController {
   public static let shared: KakaoSDKAuth.AuthController
-  @available(iOS 13.0, *)
-  public var presentationContextProvider: Any? {
-    get
-    set
-  }
+  public var presentationContextProvider: Any?
   public var authenticationSession: Any?
   public var authorizeWithTalkCompletionHandler: ((Foundation.URL) -> Swift.Void)?
   public static func isValidRedirectUri(_ redirectUri: Foundation.URL) -> Swift.Bool
@@ -106,27 +109,27 @@ public class AuthController {
   public static let delayForAuthenticationSession: Swift.Double
   public init()
   public func resetCodeVerifier()
-  public func authorizeWithTalk(prompts: [KakaoSDKAuth.Prompt]? = nil, state: Swift.String? = nil, channelPublicIds: [Swift.String]? = nil, serviceTerms: [Swift.String]? = nil, completion: @escaping (KakaoSDKAuth.OAuthToken?, Swift.Error?) -> Swift.Void)
+  public func authorizeWithTalk(prompts: [KakaoSDKAuth.Prompt]? = nil, state: Swift.String? = nil, channelPublicIds: [Swift.String]? = nil, serviceTerms: [Swift.String]? = nil, nonce: Swift.String? = nil, completion: @escaping (KakaoSDKAuth.OAuthToken?, Swift.Error?) -> Swift.Void)
   public static func handleOpenUrl(url: Foundation.URL, options: [UIKit.UIApplication.OpenURLOptionsKey : Any] = [:]) -> Swift.Bool
   public func authorizeWithAuthenticationSession(accountParameters: [Swift.String : Swift.String]? = nil, completion: @escaping (KakaoSDKAuth.OAuthToken?, Swift.Error?) -> Swift.Void)
-  public func authorizeWithAuthenticationSession(prompts: [KakaoSDKAuth.Prompt]? = nil, state: Swift.String? = nil, completion: @escaping (KakaoSDKAuth.OAuthToken?, Swift.Error?) -> Swift.Void)
-  public func authorizeWithAuthenticationSession(prompts: [KakaoSDKAuth.Prompt]? = nil, state: Swift.String? = nil, channelPublicIds: [Swift.String]? = nil, serviceTerms: [Swift.String]? = nil, completion: @escaping (KakaoSDKAuth.OAuthToken?, Swift.Error?) -> Swift.Void)
-  public func authorizeWithAuthenticationSession(scopes: [Swift.String], completion: @escaping (KakaoSDKAuth.OAuthToken?, Swift.Error?) -> Swift.Void)
+  public func authorizeWithAuthenticationSession(prompts: [KakaoSDKAuth.Prompt]? = nil, state: Swift.String? = nil, loginHint: Swift.String? = nil, nonce: Swift.String? = nil, completion: @escaping (KakaoSDKAuth.OAuthToken?, Swift.Error?) -> Swift.Void)
+  public func authorizeWithAuthenticationSession(prompts: [KakaoSDKAuth.Prompt]? = nil, state: Swift.String? = nil, channelPublicIds: [Swift.String]? = nil, serviceTerms: [Swift.String]? = nil, loginHint: Swift.String? = nil, nonce: Swift.String? = nil, completion: @escaping (KakaoSDKAuth.OAuthToken?, Swift.Error?) -> Swift.Void)
+  public func authorizeWithAuthenticationSession(scopes: [Swift.String], nonce: Swift.String? = nil, completion: @escaping (KakaoSDKAuth.OAuthToken?, Swift.Error?) -> Swift.Void)
   @objc deinit
 }
-extension AuthController {
-  public func makeParametersForTalk(prompts: [KakaoSDKAuth.Prompt]? = nil, state: Swift.String? = nil, channelPublicIds: [Swift.String]? = nil, serviceTerms: [Swift.String]? = nil) -> [Swift.String : Any]
-  public func makeParameters(prompts: [KakaoSDKAuth.Prompt]? = nil, state: Swift.String? = nil, agtToken: Swift.String? = nil, scopes: [Swift.String]? = nil, channelPublicIds: [Swift.String]? = nil, serviceTerms: [Swift.String]? = nil) -> [Swift.String : Any]
+extension KakaoSDKAuth.AuthController {
+  public func makeParametersForTalk(prompts: [KakaoSDKAuth.Prompt]? = nil, state: Swift.String? = nil, channelPublicIds: [Swift.String]? = nil, serviceTerms: [Swift.String]? = nil, nonce: Swift.String? = nil) -> [Swift.String : Any]
+  public func makeParameters(prompts: [KakaoSDKAuth.Prompt]? = nil, state: Swift.String? = nil, agtToken: Swift.String? = nil, scopes: [Swift.String]? = nil, channelPublicIds: [Swift.String]? = nil, serviceTerms: [Swift.String]? = nil, loginHint: Swift.String? = nil, nonce: Swift.String? = nil) -> [Swift.String : Any]
 }
-extension URL {
+extension Foundation.URL {
   public func oauthResult() -> (code: Swift.String?, error: Swift.Error?, state: Swift.String?)
 }
-extension AuthController {
-  public func certAuthorizeWithTalk(prompts: [KakaoSDKAuth.Prompt]? = nil, state: Swift.String? = nil, channelPublicIds: [Swift.String]? = nil, serviceTerms: [Swift.String]? = nil, completion: @escaping (KakaoSDKAuth.CertTokenInfo?, Swift.Error?) -> Swift.Void)
-  public func certAuthorizeWithAuthenticationSession(prompts: [KakaoSDKAuth.Prompt]? = nil, state: Swift.String? = nil, agtToken: Swift.String? = nil, scopes: [Swift.String]? = nil, channelPublicIds: [Swift.String]? = nil, serviceTerms: [Swift.String]? = nil, completion: @escaping (KakaoSDKAuth.CertTokenInfo?, Swift.Error?) -> Swift.Void)
+extension KakaoSDKAuth.AuthController {
+  public func certAuthorizeWithTalk(prompts: [KakaoSDKAuth.Prompt]? = nil, state: Swift.String? = nil, channelPublicIds: [Swift.String]? = nil, serviceTerms: [Swift.String]? = nil, nonce: Swift.String? = nil, completion: @escaping (KakaoSDKAuth.CertTokenInfo?, Swift.Error?) -> Swift.Void)
+  public func certAuthorizeWithAuthenticationSession(prompts: [KakaoSDKAuth.Prompt]? = nil, state: Swift.String? = nil, agtToken: Swift.String? = nil, scopes: [Swift.String]? = nil, channelPublicIds: [Swift.String]? = nil, serviceTerms: [Swift.String]? = nil, loginHint: Swift.String? = nil, nonce: Swift.String? = nil, completion: @escaping (KakaoSDKAuth.CertTokenInfo?, Swift.Error?) -> Swift.Void)
 }
-extension AuthApi {
-  final public func certToken(code: Swift.String, codeVerifier: Swift.String? = nil, redirectUri: Swift.String = KakaoCommon.shared.redirectUri(), completion: @escaping (KakaoSDKAuth.CertTokenInfo?, Swift.Error?) -> Swift.Void)
+extension KakaoSDKAuth.AuthApi {
+  final public func certToken(code: Swift.String, codeVerifier: Swift.String? = nil, redirectUri: Swift.String = KakaoSDK.shared.redirectUri(), completion: @escaping (KakaoSDKAuth.CertTokenInfo?, Swift.Error?) -> Swift.Void)
 }
 @_hasMissingDesignatedInitializers public class MigrateManager {
   public static func checkSdkVersionForMigration()

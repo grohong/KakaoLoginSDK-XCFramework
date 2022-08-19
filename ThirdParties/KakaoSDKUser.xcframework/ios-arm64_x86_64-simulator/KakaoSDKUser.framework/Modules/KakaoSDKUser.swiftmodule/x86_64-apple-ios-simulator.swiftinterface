@@ -1,5 +1,5 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 5.4.2 (swiftlang-1205.0.28.2 clang-1205.0.19.57)
+// swift-compiler-version: Apple Swift version 5.6.1 (swiftlang-5.6.0.323.66 clang-1316.0.20.12)
 // swift-module-flags: -target x86_64-apple-ios13.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name KakaoSDKUser
 import Foundation
 import KakaoSDKAuth
@@ -7,6 +7,7 @@ import KakaoSDKCommon
 @_exported import KakaoSDKUser
 import Swift
 import UIKit
+import _Concurrency
 public enum ScopeType : Swift.String, Swift.Codable {
   case Privacy
   case Service
@@ -68,13 +69,13 @@ public struct ShippingAddress : Swift.Codable {
 @_hasMissingDesignatedInitializers final public class UserApi {
   public static let shared: KakaoSDKUser.UserApi
   public static func isKakaoTalkLoginAvailable() -> Swift.Bool
-  final public func loginWithKakaoTalk(channelPublicIds: [Swift.String]? = nil, serviceTerms: [Swift.String]? = nil, completion: @escaping (KakaoSDKAuth.OAuthToken?, Swift.Error?) -> Swift.Void)
-  final public func certLoginWithKakaoTalk(prompts: [KakaoSDKAuth.Prompt]? = nil, state: Swift.String? = nil, channelPublicIds: [Swift.String]? = nil, serviceTerms: [Swift.String]? = nil, completion: @escaping (KakaoSDKAuth.CertTokenInfo?, Swift.Error?) -> Swift.Void)
-  final public func loginWithKakaoAccount(prompts: [KakaoSDKAuth.Prompt]? = nil, completion: @escaping (KakaoSDKAuth.OAuthToken?, Swift.Error?) -> Swift.Void)
-  final public func certLoginWithKakaoAccount(prompts: [KakaoSDKAuth.Prompt]? = nil, state: Swift.String? = nil, completion: @escaping (KakaoSDKAuth.CertTokenInfo?, Swift.Error?) -> Swift.Void)
-  final public func loginWithKakaoAccount(scopes: [Swift.String], completion: @escaping (KakaoSDKAuth.OAuthToken?, Swift.Error?) -> Swift.Void)
-  final public func loginWithKakaoAccount(prompts: [KakaoSDKAuth.Prompt]? = nil, channelPublicIds: [Swift.String]? = nil, serviceTerms: [Swift.String]? = nil, completion: @escaping (KakaoSDKAuth.OAuthToken?, Swift.Error?) -> Swift.Void)
-  final public func signup(completion: @escaping (Swift.Int64?, Swift.Error?) -> Swift.Void)
+  final public func loginWithKakaoTalk(channelPublicIds: [Swift.String]? = nil, serviceTerms: [Swift.String]? = nil, nonce: Swift.String? = nil, completion: @escaping (KakaoSDKAuth.OAuthToken?, Swift.Error?) -> Swift.Void)
+  final public func certLoginWithKakaoTalk(prompts: [KakaoSDKAuth.Prompt]? = nil, state: Swift.String? = nil, channelPublicIds: [Swift.String]? = nil, serviceTerms: [Swift.String]? = nil, nonce: Swift.String? = nil, completion: @escaping (KakaoSDKAuth.CertTokenInfo?, Swift.Error?) -> Swift.Void)
+  final public func loginWithKakaoAccount(prompts: [KakaoSDKAuth.Prompt]? = nil, loginHint: Swift.String? = nil, nonce: Swift.String? = nil, completion: @escaping (KakaoSDKAuth.OAuthToken?, Swift.Error?) -> Swift.Void)
+  final public func certLoginWithKakaoAccount(prompts: [KakaoSDKAuth.Prompt]? = nil, state: Swift.String? = nil, loginHint: Swift.String? = nil, nonce: Swift.String? = nil, completion: @escaping (KakaoSDKAuth.CertTokenInfo?, Swift.Error?) -> Swift.Void)
+  final public func loginWithKakaoAccount(scopes: [Swift.String], nonce: Swift.String? = nil, completion: @escaping (KakaoSDKAuth.OAuthToken?, Swift.Error?) -> Swift.Void)
+  final public func loginWithKakaoAccount(prompts: [KakaoSDKAuth.Prompt]? = nil, channelPublicIds: [Swift.String]? = nil, serviceTerms: [Swift.String]? = nil, nonce: Swift.String? = nil, completion: @escaping (KakaoSDKAuth.OAuthToken?, Swift.Error?) -> Swift.Void)
+  final public func signup(properties: [Swift.String : Swift.String]? = nil, completion: @escaping (Swift.Int64?, Swift.Error?) -> Swift.Void)
   final public func me(propertyKeys: [Swift.String]? = nil, secureResource: Swift.Bool = true, completion: @escaping (KakaoSDKUser.User?, Swift.Error?) -> Swift.Void)
   final public func updateProfile(properties: [Swift.String : Any], completion: @escaping (Swift.Error?) -> Swift.Void)
   final public func accessTokenInfo(completion: @escaping (KakaoSDKUser.AccessTokenInfo?, Swift.Error?) -> Swift.Void)
@@ -139,6 +140,8 @@ public struct Account : Swift.Codable {
   public let profileNicknameNeedsAgreement: Swift.Bool?
   public let profileImageNeedsAgreement: Swift.Bool?
   public let profile: KakaoSDKUser.Profile?
+  public let nameNeedsAgreement: Swift.Bool?
+  public let name: Swift.String?
   public let emailNeedsAgreement: Swift.Bool?
   public let isEmailValid: Swift.Bool?
   public let isEmailVerified: Swift.Bool?

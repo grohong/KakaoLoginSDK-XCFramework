@@ -6,35 +6,23 @@
 	<dict>
 		<key>Headers/KakaoSDKCommon-Swift.h</key>
 		<data>
-		GFr5I7CFmK1uTuzzPTl0kxevWNA=
+		1jN6E2EsmlHUWTAFtU3rNYkGMxY=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		AEguNT4d8pS10pnH4UaL9zyih6o=
+		YQl+GMj9su2F0L6kn4BHNjEDvPA=
 		</data>
 		<key>Modules/KakaoSDKCommon.swiftmodule/arm64-apple-ios.swiftdoc</key>
 		<data>
-		EuojlL9jachr4a+D6kbVuJ4E0xI=
+		pdsFGfwL9YdFbohVk3mj/oo+62E=
 		</data>
 		<key>Modules/KakaoSDKCommon.swiftmodule/arm64-apple-ios.swiftinterface</key>
 		<data>
-		3GvoigfLL1XeRVi995q1v7AyFXM=
+		fVF5mRjA8/e6GIJiZC2+lzOi/z0=
 		</data>
 		<key>Modules/KakaoSDKCommon.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<data>
-		pvWttYfPbmzZqvCnJdkmhmkM7oc=
-		</data>
-		<key>Modules/KakaoSDKCommon.swiftmodule/arm64.swiftdoc</key>
-		<data>
-		EuojlL9jachr4a+D6kbVuJ4E0xI=
-		</data>
-		<key>Modules/KakaoSDKCommon.swiftmodule/arm64.swiftinterface</key>
-		<data>
-		3GvoigfLL1XeRVi995q1v7AyFXM=
-		</data>
-		<key>Modules/KakaoSDKCommon.swiftmodule/arm64.swiftmodule</key>
-		<data>
-		pvWttYfPbmzZqvCnJdkmhmkM7oc=
+		ARovxAACUyTHaZ2WpMcI+YfkKO4=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -47,49 +35,28 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			UafDHZMckMUexpPoxcA/h6GhttSRxgX6lAO2B4phBxI=
+			JKCrMePmWP/7gCYlNChye5u5ZBX33mYql+i8/b7nb2s=
 			</data>
 		</dict>
 		<key>Modules/KakaoSDKCommon.swiftmodule/arm64-apple-ios.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			NYe2fVz8SIyEe6U1wAYxk0SyXCU80lJxOmcc2ajIFWM=
+			j2jl/7zuSm9GQ+o65qC0t7KbjzRCYBJPyRHrtKujfgU=
 			</data>
 		</dict>
 		<key>Modules/KakaoSDKCommon.swiftmodule/arm64-apple-ios.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			lXjnTEm0UPCnnqO2JYnMitjH062se9qXj1UKUCKWnWQ=
+			wgUzCWFoQaOykNf8wq6GYT6HIjiIUnkB9i/qdg1bmW0=
 			</data>
 		</dict>
 		<key>Modules/KakaoSDKCommon.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			zfLoXYpXots12biL6UJdub/mjWSCJ8dbPpfVOnORW4w=
-			</data>
-		</dict>
-		<key>Modules/KakaoSDKCommon.swiftmodule/arm64.swiftdoc</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			NYe2fVz8SIyEe6U1wAYxk0SyXCU80lJxOmcc2ajIFWM=
-			</data>
-		</dict>
-		<key>Modules/KakaoSDKCommon.swiftmodule/arm64.swiftinterface</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			lXjnTEm0UPCnnqO2JYnMitjH062se9qXj1UKUCKWnWQ=
-			</data>
-		</dict>
-		<key>Modules/KakaoSDKCommon.swiftmodule/arm64.swiftmodule</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			zfLoXYpXots12biL6UJdub/mjWSCJ8dbPpfVOnORW4w=
+			GXtkztfeG3q0JDR4LMUpo6raACNmCoX1ph6yBgZAzM0=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

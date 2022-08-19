@@ -55,6 +55,6 @@ public class Properties {
     }
     
     public static func markSdkVersion() {
-        Properties.save(key: Properties.sdkVersionKey, string: KakaoCommon.shared.sdkVersion())
+        Properties.save(key: Properties.sdkVersionKey, string: KakaoSDK.shared.sdkVersion())
     }
 }

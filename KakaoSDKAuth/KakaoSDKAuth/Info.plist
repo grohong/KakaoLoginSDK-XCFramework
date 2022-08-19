@@ -13,12 +13,10 @@
 	<key>CFBundleName</key>
 	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundlePackageType</key>
-	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
+	<string>FMWK</string>
 	<key>CFBundleShortVersionString</key>
-	<string>$(KAKAO_SDK_VERSION)</string>
+	<string>2.11.1</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
-	<key>LSApplicationCategoryType</key>
-	<string>$(KAKAO_SDK_VERSION)</string>
 </dict>
 </plist>
